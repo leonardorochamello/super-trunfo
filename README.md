@@ -1,7 +1,7 @@
-🃏# Super Trunfo - Jogo de Comparação de Cartas
+🃏 Super Trunfo - Jogo de Comparação de Cartas
 Este é um projeto de Super Trunfo em C, onde simulamos o jogo utilizando cartas de países e comparamos os atributos dessas cartas. O jogo permite ao usuário selecionar dois atributos para comparar, calcular diversos índices como Densidade Demográfica e PIB per Capita, além de permitir a escolha do atributo de comparação via menu interativo.
 
-📋 # Funcionalidades
+📋 Funcionalidades
 Cadastro de Cartas: O programa simula um cadastro de cartas com informações de países como População, Área, PIB, Pontos Turísticos, Densidade Demográfica e PIB per Capita.
 
 Menu Interativo: O jogador pode escolher os atributos para comparar entre as cartas, utilizando um menu dinâmico implementado com a estrutura switch.
