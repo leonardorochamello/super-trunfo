@@ -5,57 +5,77 @@
 #define AGUA 0
 #define NAVIO 3
 
+// Função para verificar se um navio pode ser colocado sem ultrapassar os limites
+int dentro_dos_limites(int linha, int coluna, int delta_linha, int delta_coluna) {
+    int linha_final = linha + delta_linha * (TAMANHO_NAVIO - 1);
+    int coluna_final = coluna + delta_coluna * (TAMANHO_NAVIO - 1);
+
+    return (linha_final >= 0 && linha_final < TAMANHO_TABULEIRO &&
+            coluna_final >= 0 && coluna_final < TAMANHO_TABULEIRO);
+}
+
+// Função para verificar se há sobreposição
+int sem_sobreposicao(int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO],
+                     int linha, int coluna, int delta_linha, int delta_coluna) {
+    for (int i = 0; i < TAMANHO_NAVIO; i++) {
+        int l = linha + i * delta_linha;
+        int c = coluna + i * delta_coluna;
+        if (tabuleiro[l][c] == NAVIO) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+// Função para posicionar o navio
+void posicionar_navio(int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO],
+                      int linha, int coluna, int delta_linha, int delta_coluna) {
+    for (int i = 0; i < TAMANHO_NAVIO; i++) {
+        int l = linha + i * delta_linha;
+        int c = coluna + i * delta_coluna;
+        tabuleiro[l][c] = NAVIO;
+    }
+}
+
 int main() {
     int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO];
 
-    // Inicializa o tabuleiro com água (0)
+    // Inicializa o tabuleiro com água
     for (int i = 0; i < TAMANHO_TABULEIRO; i++) {
         for (int j = 0; j < TAMANHO_TABULEIRO; j++) {
             tabuleiro[i][j] = AGUA;
         }
     }
 
-    // Coordenadas iniciais dos navios
-    int linha_horizontal = 2, coluna_horizontal = 4;  // Navio horizontal começando em (2,4)
-    int linha_vertical = 5, coluna_vertical = 1;      // Navio vertical começando em (5,1)
+    // Coordenadas e direções dos navios
+    // delta_linha e delta_coluna indicam a direção:
+    // horizontal: (0,1), vertical: (1,0), diagonal crescente: (1,1), diagonal decrescente: (1,-1)
 
-    // Verificação se o navio horizontal cabe no tabuleiro
-    if (coluna_horizontal + TAMANHO_NAVIO <= TAMANHO_TABULEIRO) {
-        // Verifica sobreposição
-        int sobreposicao = 0;
-        for (int i = 0; i < TAMANHO_NAVIO; i++) {
-            if (tabuleiro[linha_horizontal][coluna_horizontal + i] == NAVIO) {
-                sobreposicao = 1;
-                break;
-            }
-        }
-
-        if (!sobreposicao) {
-            for (int i = 0; i < TAMANHO_NAVIO; i++) {
-                tabuleiro[linha_horizontal][coluna_horizontal + i] = NAVIO;
-            }
-        }
+    // Navio 1: horizontal em (1,2)
+    if (dentro_dos_limites(1, 2, 0, 1) &&
+        sem_sobreposicao(tabuleiro, 1, 2, 0, 1)) {
+        posicionar_navio(tabuleiro, 1, 2, 0, 1);
     }
 
-    // Verificação se o navio vertical cabe no tabuleiro
-    if (linha_vertical + TAMANHO_NAVIO <= TAMANHO_TABULEIRO) {
-        // Verifica sobreposição
-        int sobreposicao = 0;
-        for (int i = 0; i < TAMANHO_NAVIO; i++) {
-            if (tabuleiro[linha_vertical + i][coluna_vertical] == NAVIO) {
-                sobreposicao = 1;
-                break;
-            }
-        }
-
-        if (!sobreposicao) {
-            for (int i = 0; i < TAMANHO_NAVIO; i++) {
-                tabuleiro[linha_vertical + i][coluna_vertical] = NAVIO;
-            }
-        }
+    // Navio 2: vertical em (5,6)
+    if (dentro_dos_limites(5, 6, 1, 0) &&
+        sem_sobreposicao(tabuleiro, 5, 6, 1, 0)) {
+        posicionar_navio(tabuleiro, 5, 6, 1, 0);
     }
 
-    // Exibição do tabuleiro
+    // Navio 3: diagonal principal (↘) em (0,0)
+    if (dentro_dos_limites(0, 0, 1, 1) &&
+        sem_sobreposicao(tabuleiro, 0, 0, 1, 1)) {
+        posicionar_navio(tabuleiro, 0, 0, 1, 1);
+    }
+
+    // Navio 4: diagonal secundária (↙) em (0, 9)
+    if (dentro_dos_limites(0, 9, 1, -1) &&
+        sem_sobreposicao(tabuleiro, 0, 9, 1, -1)) {
+        posicionar_navio(tabuleiro, 0, 9, 1, -1);
+    }
+
+    // Exibe o tabuleiro
     printf("Tabuleiro de Batalha Naval:\n\n");
     for (int i = 0; i < TAMANHO_TABULEIRO; i++) {
         for (int j = 0; j < TAMANHO_TABULEIRO; j++) {
